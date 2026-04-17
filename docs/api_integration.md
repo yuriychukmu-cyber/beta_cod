@@ -8,7 +8,10 @@
 Use env vars:
 - `DATSSOL_API_BASE_URL`
 - `DATSSOL_API_TOKEN`
-- `DATSSOL_API_AUTH_HEADER` (optional, default `Authorization`)
+- `DATSSOL_API_AUTH_HEADER` (optional, default `X-Auth-Token`)
+- `DATSSOL_API_TOKEN_PREFIX` (optional, default empty; set to `Bearer ` if your server requires bearer format)
+
+`DATSSOL_API_BASE_URL` may be set to either API root (`https://host/api`) or full endpoint (`https://host/api/arena`).
 
 Mock mode returns simulator-driven local responses for offline debugging.
 

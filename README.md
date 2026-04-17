@@ -34,8 +34,10 @@ export DATSSOL_API_BASE_URL="https://<your-server>"
 export DATSSOL_API_TOKEN="<your-token>"
 python -m datssol.scripts.run_client --turns 3
 ```
+`DATSSOL_API_BASE_URL` can be either API root (e.g. `https://host/api`) or a full endpoint like `https://host/api/arena`.
 
 You can also override from CLI (`--base-url`, `--token`, `--auth-header`) but env vars are recommended.
+By default client sends token via `X-Auth-Token` header. If backend expects bearer auth, set `DATSSOL_API_AUTH_HEADER=Authorization` and `DATSSOL_API_TOKEN_PREFIX=\"Bearer \"`.
 
 Or use local config file:
 ```bash
