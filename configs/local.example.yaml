@@ -1,0 +1,5 @@
+# Copy to configs/local.yaml for local real-server runs.
+api:
+  base_url: "https://your-server.example"
+  token: "paste-token-here"
+  auth_header: "Authorization"

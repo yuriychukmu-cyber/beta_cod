@@ -1,0 +1,4 @@
+model:
+  in_dim: 5
+  hidden: 64
+  history_dim: 64
