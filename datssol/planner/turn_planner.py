@@ -1,4 +1,5 @@
 from datssol.game.commands import PlantationCommand, TurnCommand
+from datssol.constants import ACTION_TYPES
 from datssol.game.state import WorldState
 from datssol.planner.beam_search import build_turn_with_beam
 from datssol.planner.local_actions import topk_local_actions
@@ -10,8 +11,23 @@ class TurnPlanner:
         self.beam_size = beam_size
         self.top_k = top_k
 
-    def plan(self, state: WorldState, player_id: int, model_output: object | None = None) -> TurnCommand:
+    def plan(
+        self,
+        state: WorldState,
+        player_id: int,
+        model_output: object | None = None,
+        node_id_to_row: dict[int, int] | None = None,
+    ) -> TurnCommand:
         cand = topk_local_actions(state, player_id, self.top_k)
+        if model_output is not None and node_id_to_row is not None and hasattr(model_output, "action_logits"):
+            logits = getattr(model_output, "action_logits")
+            for author_id, items in cand.items():
+                row = node_id_to_row.get(author_id)
+                if row is None or row >= len(logits):
+                    continue
+                for a in items:
+                    action_idx = ACTION_TYPES.index(a.action_type)
+                    a.score += float(logits[row, action_idx].item()) * 0.15
         picked = build_turn_with_beam(cand, self.beam_size)
         main_risk = estimate_main_death_risk(state, player_id)
         iso_risk = estimate_isolation_risk(state, player_id)

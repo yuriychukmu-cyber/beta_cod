@@ -25,6 +25,7 @@ python -m datssol.scripts.generate_dataset --episodes 2 --out data/demo_dataset.
 python -m datssol.scripts.train_imitation --dataset data/demo_dataset.npz --epochs 1
 python -m datssol.scripts.profile_inference --steps 20
 python -m datssol.scripts.train_rl --iters 1 --horizon 16
+python -m datssol.scripts.offline_finetune --episodes 16 --turns 80 --epochs 3
 python -m datssol.scripts.run_client --mock --turns 5
 ```
 
@@ -34,8 +35,10 @@ export DATSSOL_API_BASE_URL="https://<your-server>"
 export DATSSOL_API_TOKEN="<your-token>"
 python -m datssol.scripts.run_client --turns 3
 ```
+`DATSSOL_API_BASE_URL` can be either API root (e.g. `https://host/api`) or a full endpoint like `https://host/api/arena`.
 
 You can also override from CLI (`--base-url`, `--token`, `--auth-header`) but env vars are recommended.
+By default client sends token via `X-Auth-Token` header. If backend expects bearer auth, set `DATSSOL_API_AUTH_HEADER=Authorization` and `DATSSOL_API_TOKEN_PREFIX=\"Bearer \"`.
 
 Or use local config file:
 ```bash

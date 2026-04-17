@@ -28,4 +28,5 @@ class NeuralBot(Bot):
         x = torch.from_numpy(x_np).to(self.device)
         e = torch.from_numpy(e_np).to(self.device)
         out = self.model(x, e)
-        return self.planner.plan(state, player_id, model_output=out)
+        node_id_to_row = {pid: i for i, pid in enumerate(ids)}
+        return self.planner.plan(state, player_id, model_output=out, node_id_to_row=node_id_to_row)

@@ -12,4 +12,18 @@ def test_serialize() -> None:
 def test_api_headers() -> None:
     c = DatsSolApiClient(mock=True, token="abc")
     h = c._headers()
-    assert "Authorization" in h
+    assert h["X-Auth-Token"] == "abc"
+
+
+def test_api_headers_with_prefix() -> None:
+    c = DatsSolApiClient(mock=True, token="abc", auth_header="Authorization", token_prefix="Bearer ")
+    h = c._headers()
+    assert h["Authorization"] == "Bearer abc"
+
+
+def test_api_url_builder_handles_root_and_endpoint() -> None:
+    c_root = DatsSolApiClient(mock=True, base_url="https://games-test.datsteam.dev/api")
+    assert c_root._build_url("/arena") == "https://games-test.datsteam.dev/api/arena"
+    c_endpoint = DatsSolApiClient(mock=True, base_url="https://games-test.datsteam.dev/api/arena")
+    assert c_endpoint._build_url("/arena") == "https://games-test.datsteam.dev/api/arena"
+    assert c_endpoint._build_url("/command") == "https://games-test.datsteam.dev/api/command"
